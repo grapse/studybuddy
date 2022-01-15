@@ -4,7 +4,7 @@ function Test({imgdata}){
     const [a, setA] = useState(-1);
     return (     
     <> 
-        <div>test</div>
+        <div>test2</div>
     </>)
     ;
 }
