@@ -86,9 +86,8 @@ class DndCalendar extends React.Component {
       const res = await fetch('http://localhost:8000/api/date/?format=json');
       const getEvents = await res.json();
       const newEvents = getEvents.map((v,i) => {
-          return({id:i,title:v.Task,start:new Date(v.year,v.month-1,v.date,19,30,0),end:new Date(v.year,v.month-1,v.date,19,30,0)})
+          return({id:v.id,title:v.Task,start:new Date(v.year,v.month-1,v.date,19,0,0),end:new Date(v.year,v.month-1,v.date,20,0,0)})
       })
-      console.log(events);
       this.setState({
         events: newEvents
       });
@@ -117,7 +116,19 @@ class DndCalendar extends React.Component {
       events: nextEvents,
     })
 
-    // alert(`${event.title} was dropped onto ${updatedEvent.start}`)
+    fetch(`http://localhost:8000/api/date/${event.id}/`, {
+			method: 'PUT',
+			body: JSON.stringify({
+                "id":event.id,
+				"date":start.getDate(),
+                "month":start.getMonth() + 1,
+                "year":start.getYear() + 1900,
+                "Task":event.title,
+                "completed":allDay
+			}),
+			headers: {
+			  "Content-type": "application/json; charset=UTF-8"
+			}});
   }
 
   resizeEvent = ({ event, start, end }) => {
@@ -145,12 +156,26 @@ class DndCalendar extends React.Component {
         let hour = {
             id: newId,
             title: title,
-            allDay: event.slots.length == 1,
+            allDay: false,
             start: event.start,
             end: event.end,
         }
         this.setState({
-        events: this.state.events.concat([hour]),
+            events: this.state.events.concat([hour]),
+        })
+        fetch('http://localhost:8000/api/date/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "date":event.start.getDate(),
+                "month":event.start.getMonth() + 1,
+                "year":event.start.getYear() + 1900,
+                "Task":title,
+                "completed":false
+            })
         })
      }
      
@@ -169,7 +194,7 @@ class DndCalendar extends React.Component {
     onSelectEvent(pEvent) {
         const r = window.confirm("Would you like to remove this event?")
         if(r === true){
-          // edit database
+            fetch(`http://localhost:8000/api/date/${pEvent.id}`, { method: 'DELETE' });
           this.setState((prevState, props) => {
             const events = [...prevState.events]
             const idx = events.indexOf(pEvent)

@@ -12,14 +12,14 @@ from rest_framework import status
 class DeckView(viewsets.ModelViewSet):
     serializer_class = DeckSerializer
     queryset = Deck.objects.all()
-    http_method_names = ['get','post','head']
+    http_method_names = ['get','post','head','delete','put']
 
 class FlashcardsView(viewsets.ModelViewSet):
     serializer_class = FlashcardsSerializer
     queryset = Flashcards.objects.all()
-    http_method_names = ['get', 'post', 'head']
+    http_method_names = ['get', 'post', 'head','delete','put']
 
 class dateList(viewsets.ModelViewSet):
     serializer_class = dserializers
     queryset = date.objects.all()
-    http_method_names = ['get','post','head']
+    http_method_names = ['get','post','head','delete','put']
