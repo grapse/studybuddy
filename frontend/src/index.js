@@ -6,6 +6,7 @@ import Dashboard from './components/dashboard'
 import Navigation from "./components/navbar";
 import Test from './components/test'
 import Calendar from './components/calendar'
+import Timer from './components/timer'
 
 ReactDOM.render(
   <Router>
@@ -14,6 +15,7 @@ ReactDOM.render(
       <Route path="/" element={<Dashboard />} />
       <Route path="/about" element={<Test />} />
       <Route path="/calendar" element={<Calendar />} />
+      <Route path="/timer" element={<Timer />} />
     </Routes>
   </Router>,
 

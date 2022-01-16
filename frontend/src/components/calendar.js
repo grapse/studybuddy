@@ -40,7 +40,7 @@ const CalendarHolder = styled.div`
     height: 90vh;
     padding: 20px;
     `
-const modalMsg = "Store your homework, tests, and whatever you want here to keep track!\n\nClick a date to add an event\nClick an event to delete it\nDrag an event to move it"
+const modalMsg = "Store your homework, tests, or whatever you want to keep track of here!\n\nClick a date to add an event\nDouble-click an event to delete it\nDrag an event to move it"
 
 function Calendar(){
     const [show, setShow] = useState(false);
