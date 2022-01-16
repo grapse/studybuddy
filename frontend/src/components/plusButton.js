@@ -26,10 +26,10 @@ const AddEvent = styled.div`
     // Bottom: How far the button should be from the bottom of the screen
     // Right: How far it should be from the right of the screen
     // iconName: Use one of the Bootstrap icon names
-function PlusButton({bottom,right,iconName}){
+function PlusButton({bottom,right,left,iconName, onClickButton}){
     return (     
     <> 
-        <AddEvent style={{bottom:bottom,right:right}}>
+        <AddEvent style={{bottom:bottom,right:right,left:left}} onClick={onClickButton}>
             <i class={`bi bi-${iconName}`} style={{fontSize:"1rem"}}></i>
         </AddEvent>
 

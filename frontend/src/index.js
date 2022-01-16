@@ -4,11 +4,11 @@ import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Dashboard from './components/dashboard'
 import Navigation from "./components/navbar";
-import FlashcardView from "./views/flashcardview";
+import FlashcardView from "./views/FlashcardView";
 import Test from './components/test'
 import Calendar from './components/calendar'
 import Timer from './components/timer'
-import Login from './views/loginview.jsx';
+import Login from './views/LoginView.jsx';
 
 ReactDOM.render(
   <Router>
