@@ -51,7 +51,7 @@ function FlashcardView(props){
         async function fetchAPI() {
             let response = await fetch('http://localhost:8000/api/flashcards/?format=api');       
             response = await response.json()
-            console.log(response)
+            console.log()
             setCollection(response)
         }
         fetchAPI();
