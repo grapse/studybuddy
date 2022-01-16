@@ -24,4 +24,6 @@ router.register(r'todo', views.TodoView, 'todo')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('home/', include('User.urls')),
 ]
