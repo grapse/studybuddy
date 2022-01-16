@@ -42,7 +42,7 @@ function Navigation({path}){
     <> 
         <Navbar bg="#fff" style={{height:"10vh",paddingLeft:"0px",boxShadow:"0px 0px 3px #888888"}} expand="lg">
           <Container>
-            <Navbar.Brand style={{color:"#db504a",fontWeight:"700"}} href="/">StudyBuddy</Navbar.Brand>
+            <Navbar.Brand style={{color:"#db504a",fontWeight:"700"}} href="/dashboard">StudyBuddy</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
@@ -51,7 +51,7 @@ function Navigation({path}){
                 <Nav.Link href="/flashcards">{path === "/flashcards" ? <NavItemSelect>Flashcards</NavItemSelect> : <NavItem>Flashcards</NavItem>}</Nav.Link>
               </Nav>
               <Nav className="justify-content-end">
-                <Button style={{backgroundColor:"#db504a",borderColor:"#bb302a"}}>Log In</Button>
+                <Button style={{backgroundColor:"#db504a",borderColor:"#bb302a", color: 'white'}} href="/">Log Out</Button>
               </Nav>
             </Navbar.Collapse>
           </Container>
