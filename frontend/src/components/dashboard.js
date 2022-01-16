@@ -1,9 +1,9 @@
 import { useState } from "react";
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
-const Images = [{img:'/undraw_timer.svg',name:'Timer'},
-                {img:'/undraw_calendar.svg',name:'Calendar'},
-                {img:'/undraw_flashcards.svg',name:'Flashcards'}]
+const Images = [{img:'/undraw_timer.svg',name:'Timer',link:'timer'},
+                {img:'/undraw_calendar.svg',name:'Calendar',link:'calendar'},
+                {img:'/undraw_flashcards.svg',name:'Flashcards',link:'flashcards'}]
 
 const Icons = styled.div`
     display: flex;
@@ -15,7 +15,7 @@ const Icons = styled.div`
     align-items: flex-end;
     margin:auto;
     `
-const Icon = styled.div`
+const Icon = styled.a`
     width: 30%;
     height: 100%;
     display: flex;
@@ -54,7 +54,7 @@ function Dashboard({imgdata}){
         <Icons>
             {Images.map((v,i) => {
                 return(
-                    <Icon>
+                    <Icon href={v.link}>
                         <img src={v.img} alt={v.name}></img>
                         <Title>{v.name}</Title>
                     </Icon>
