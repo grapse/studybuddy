@@ -7,6 +7,10 @@ const Footer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    bottom:        0; 
+    right:       0; 
+    position:   fixed; 
+    padding: 30px;
 `;
 
 const PrimaryButton = styled(StyledButton)`
