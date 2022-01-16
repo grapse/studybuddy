@@ -16,10 +16,10 @@ class FlashcardsSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         dk = validated_data.pop('deck', None)
         if dk:
-            deck = Deck.objects.get_or_create(name=deck)[0]
+            deck = Deck.objects.get_or_create(name=dk)[0]
             validated_data['deck'] = deck
         return Flashcards.objects.create(**validated_data)
 
     class Meta:
         model = Flashcards
-        fields = ('id', 'question', 'answer', 'deck')
+        fields = ['id', 'question', 'answer', 'deck']

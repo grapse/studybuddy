@@ -9,11 +9,11 @@ class TodoView(viewsets.ModelViewSet):
     queryset = Todo.objects.all()
 
 class DeckView(viewsets.ModelViewSet):
-    deck_class = DeckSerializer
+    serializer_class = DeckSerializer
     queryset = Deck.objects.all()
     http_method_names = ['get', 'head']
 
 class FlashcardsView(viewsets.ModelViewSet):
-    fc_class = FlashcardsSerializer
+    serializer_class = FlashcardsSerializer
     queryset = Flashcards.objects.all()
     http_method_names = ['get', 'post', 'head']
