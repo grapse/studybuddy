@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from 'styled-components'
 
 const Images = [{img:'/undraw_timer.svg',name:'Timer',link:'timer',description:'Study for set periods of time.'},
@@ -82,7 +81,6 @@ function Dashboard(){
                 })}
             </Icons>
         </Holder>
-
     </>)
     ;
 }
