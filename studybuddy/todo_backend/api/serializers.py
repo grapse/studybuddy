@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Todo, Deck, Flashcards
+from .models import Todo, Deck, Flashcards, date
 
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,3 +23,9 @@ class FlashcardsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Flashcards
         fields = ['id', 'question', 'answer', 'deck']
+
+class dserializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = date
+        fields  = ['id', 'date','month','year', 'Task', 'completed']

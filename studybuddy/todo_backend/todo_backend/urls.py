@@ -23,6 +23,7 @@ router = routers.DefaultRouter()
 router.register(r'todo', views.TodoView, 'todo')
 router.register('flashcards', views.FlashcardsView)
 router.register('deck', views.DeckView)
+router.register('date', views.dateList)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
