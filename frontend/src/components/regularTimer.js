@@ -18,6 +18,11 @@ const Icon = styled.div`
         cursor:pointer;
     }
     `
+const Progress = styled.circle`
+    transition: stroke-dashoffset 0.35s;
+    transform-origin: 50% 50%,
+    stroke-width:4px`
+
 
 function RegularTimer(props){
     const {initialMinute = 30,initialSeconds = 0} = props;
