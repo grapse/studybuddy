@@ -20,10 +20,9 @@ from api import views
 from django.views.generic import TemplateView
 
 router = routers.DefaultRouter()
-router.register(r'todo', views.TodoView, 'todo')
-router.register('flashcards', views.FlashcardsView)
-router.register('deck', views.DeckView)
-router.register('date', views.dateList)
+router.register(r'flashcards', views.FlashcardsView,'flashcards')
+router.register(r'deck', views.DeckView,'deck')
+router.register(r'date', views.dateList,'date')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
