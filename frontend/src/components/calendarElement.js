@@ -125,6 +125,7 @@ class DndCalendar extends React.Component {
      let newId = Math.max(...idList) + 1
      const title = window.prompt('New Event name');
      if (title) {
+         // edit database
         let hour = {
             id: newId,
             title: title,
@@ -152,7 +153,7 @@ class DndCalendar extends React.Component {
     onSelectEvent(pEvent) {
         const r = window.confirm("Would you like to remove this event?")
         if(r === true){
-          
+          // edit database
           this.setState((prevState, props) => {
             const events = [...prevState.events]
             const idx = events.indexOf(pEvent)
@@ -177,7 +178,8 @@ class DndCalendar extends React.Component {
         defaultView={Views.MONTH}
         defaultDate={new Date()}
         popup={true}
-        onSelectEvent = {event => this.onSelectEvent(event)}
+        onDoubleClickEvent = {event => this.onSelectEvent(event)}
+        views={['month', 'day', 'week']}
         eventPropGetter={(this.eventStyleGetter)}
         dragFromOutsideItem={
           this.state.displayDragItemInCell ? this.dragFromOutsideItem : null
