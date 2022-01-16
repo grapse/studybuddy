@@ -17,13 +17,17 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from api import views
+from django.views.generic import TemplateView
 
 router = routers.DefaultRouter()
 router.register(r'todo', views.TodoView, 'todo')
+router.register('flashcards', views.FlashcardsView)
+router.register('deck', views.DeckView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('accounts/', include('django.contrib.auth.urls')),
     path('home/', include('User.urls')),
+    path('cards/', TemplateView.as_view(template_name="index.html")),
 ]

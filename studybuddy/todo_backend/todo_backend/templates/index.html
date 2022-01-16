@@ -1,0 +1,75 @@
+{% block content %}
+    <div id="root">
+        <div class="jumbotron">
+            <h1 class="display-3">Javascript Card App</h1>
+            <p class="lead">A study app by Jordan Hoover</p>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2>Guess the answers on the card!</h2>
+                    <div class="badges mb-4">
+                        <span class="badge badge-info">Correct: ${correct}</span>
+                        <span class="badge badge-danger">Wrong: ${wrong}</span>
+                    </div>
+                    <div v-on:click="toggleCard" class="flashcard">
+                        <transition name="flip">
+                            <div v-if="!cardFlipped" class="card border-primary mb-3 pb-5" key="front">
+                                <div class="card-header bg-primary">${flashcards[cardCount - 1].subject}</div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Question #${cardCount}</h4>
+                                    <p class="card-text">${flashcards[cardCount - 1].question}</p>
+                                </div>
+                            </div>
+                            <div v-else class="card border-info mb-3 pb-5" key="back">
+                                <div class="card-header bg-info">${flashcards[cardCount - 1].subject}</div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Answer #${cardCount}</h4>
+                                    <p class="card-text">${flashcards[cardCount - 1].answer}</p>
+                                </div>
+                            </div>
+                        </transition>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 mb-2">
+                <div class="col-lg-8 mx-auto guess-buttons">
+                    <h4>Did you guess correctly?</h4>
+                    <div class="next-button">
+                        <button type="button" class="btn btn-info" v-on:click="increaseScore">Yes</button>
+                        <button type="button" class="btn btn-danger" v-on:click="decreaseScore">No</button>
+                        <button type="button" class="btn btn-secondary" v-on:click="skipCard">Skip</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-lg-8 mx-auto guess-buttons">
+                    <hr>
+                    <h2>Have something else to add? Add a new card below.</h2>
+                    <div v-show="addCardError" class="alert alert-dismissible alert-danger mt-3">
+                        <button v-on:click="addCardError = false" type="button" class="close" data-dismiss="alert">
+                            &times;
+                        </button>
+                        <strong>Uh oh!</strong> Make sure your card has all fields filled out.
+                    </div>
+                    <h4 class="mt-3">Add a card</h4>
+                    <form v-on:submit.prevent="createCard">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="card-question-input">Question</label>
+                                <textarea v-model="formFieldAnswer" class="form-control mb-3" rows="3" id="card-question-input"></textarea>
+                                <label for="card-answer-input">Answer</label>
+                                <textarea v-model="formFieldQuestion" class="form-control mb-3" rows="3" id="card-answer-input"></textarea>
+                                <label for="subject-select">Select a subject</label>
+                                <select v-model="formFieldSubject" class="form-control mb-3" id="subject-select">
+                                    <option v-for="subject in subjects">${subject}</option>
+                                </select>
+                            </div>
+                        </fieldset>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
