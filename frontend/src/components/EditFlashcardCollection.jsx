@@ -12,8 +12,9 @@ const Flashcard = styled.div`
     border-radius: 10px;
     align-self: center;
     margin: 10px;
-    display: flex:
-    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const Collection = styled.div`
@@ -23,12 +24,21 @@ const Collection = styled.div`
     overflow-y: auto;
 `;
 
-const Title = styled.div`
+const TitleField = styled.input`
     color: #DB504A;
     font-weight: 500;
     font-size: 30px;
     align-self: center;
-    margin-bottom: 30px;
+    background-color: #F1F1F1;
+    border: none;
+`;
+
+const TextField = styled.input`
+    background-color: #F1F1F1;
+    border: none;
+    margin: 10px;
+    padding: 5px;
+    width: 40%;
 `;
 
 function EditFlashCardCollection(props){
@@ -77,14 +87,14 @@ function EditFlashCardCollection(props){
     const getEditFlashcards = useCallback(() => {
         return (
             collection.map((card, i) => (
-                <Flashcard>
-                    <input 
+                <Flashcard key={i}>
+                    <TextField 
                         type="text" 
                         key={i} 
                         value={card?.question} 
                         placeholder='question...'
                         onChange={(e) => updateQuestion(e.target.value, i)} />
-                    <input 
+                    <TextField 
                         type="text" 
                         key={i} 
                         value={card?.answer} 
@@ -98,12 +108,12 @@ function EditFlashCardCollection(props){
 
     return(     
         <div>
-            <input 
+            <Collection>
+            <TitleField 
                 type="text" 
                 value={collectionTitle} 
                 placeholder='Title'
                 onChange={(e) => updateTitle(e.target.value)} />
-            <Collection>
             {collection && getEditFlashcards()}
             </Collection>
             <Footer>

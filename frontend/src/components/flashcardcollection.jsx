@@ -1,6 +1,21 @@
 import { useState, useCallback } from "react";
 import styled from 'styled-components';
-import { StyledButton, Footer, PrimaryButton } from "../styles/styles";
+import { StyledButton, Footer } from "../styles/styles";
+import { Button } from 'react-bootstrap';
+import ReviewView from "../views/ReviewView";
+
+export const PrimaryButton = styled(Button)`
+    width: 200px;
+    height: 50px;
+    padding: 11px;
+    align-self: center;
+    align-items: center;
+    font-weight: 500 !important;;
+    border-radius: 15px;
+    border: none;
+    background-color: #DB504A !important;
+    color: white !important;
+`
 
 const Flashcard = styled.div`
     width: 80%; 
@@ -11,8 +26,9 @@ const Flashcard = styled.div`
     border-radius: 10px;
     align-self: center;
     margin: 10px;
-    display: flex:
-    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const Collection = styled.div`
@@ -25,17 +41,13 @@ const Collection = styled.div`
 
 const Question = styled.div`
     font-weight: 500;
-    width: 50%;
-    padding: 5px;
-    margin: 0px;
+    padding: 20px;
 `;
 
 const Answer = styled.div`
     color: #DB504A;
     font-weight: 500;
-    width: 50%;
-    padding: 5px;
-    margin: 0px;
+    padding: 20px;
 `;
 
 const Title = styled.div`
@@ -45,10 +57,24 @@ const Title = styled.div`
     align-self: center;
 `;
 
+const ReviewContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    size: 200%;
+    background-color: white;
+    width:      100%;
+    height:     100%; 
+    z-index:    10;
+    top:        0; 
+    left:       0; 
+    position:   fixed; 
+`;
+
 function FlashcardCollection(props){
     const { deleteDeck, selectedDeck, editDeck, flashcardCollection } = props;
 
     const [collection, setCollection] = useState(flashcardCollection);
+    const [review, setReview] = useState(false);
 
     const onDeleteDeck = useCallback(() => {
         setCollection();
@@ -58,7 +84,7 @@ function FlashcardCollection(props){
     const getFlashcards = useCallback(() => {
         return (
             collection.map((card, i) => (
-                <Flashcard>
+                <Flashcard key={i}>
                     <Question>{card?.question}</Question>
                     <Answer>{card?.answer}</Answer>
                 </Flashcard>
@@ -75,8 +101,16 @@ function FlashcardCollection(props){
             <Footer>
                 <StyledButton onClick={() => editDeck()}>Edit</StyledButton>
                 <StyledButton onClick={() => onDeleteDeck()}>Delete All</StyledButton>
-                <PrimaryButton onClick={() => alert('review')}>Review</PrimaryButton>
+                <PrimaryButton disabled={!collection} onClick={() => setReview(true)}>Review</PrimaryButton>
             </Footer>
+            {review &&
+                <ReviewContent>
+                    <ReviewView flashcardCollection={collection}/>
+                    <Footer>
+                        <PrimaryButton onClick={() => setReview(false)}>Done</PrimaryButton>
+                    </Footer>
+                </ReviewContent>
+            }
         </div>
     );
 }

@@ -37,32 +37,32 @@ const MainView = styled.div`
     padding-top: 30px;
 `;
 
-const decks = ['Comp Sci', 'Bio', 'Math'];
-const flashcards = [{question: 'test1', answer: 'test'},
-                    {question: 'test2', answer: 'test'},
-                    {question: 'test3', answer: 'test'}];
 function FlashcardView(props){
-    const [deckList, setDeckList] = useState()
+    const [deckList, setDeckList] = useState();
     const [selectedDeck, setSelectedDeck] = useState();
-    const [collection, setCollection] = useState(flashcards); // contains flashcards for selectedDeck
+    const [collection, setCollection] = useState(); // contains flashcards for selectedDeck
+    const [selectedCollection, setSelectedCollection] = useState();
     const [edit, setEdit] = useState(false);
 
     useEffect(() => {
         async function fetchAPI() {
-            let response = await fetch('http://localhost:8000/api/flashcards/?format=api');       
-            response = await response.json()
-            console.log()
-            setCollection(response)
+            let collectionres = await fetch('http://localhost:8000/api/flashcards/?format=json');       
+            collectionres = await collectionres.json();
+            setCollection(collectionres);
+            let deckres = await fetch('http://localhost:8000/api/deck/?format=json');       
+            deckres = await deckres.json();
+            setDeckList(deckres);
         }
         fetchAPI();
     }, [])
 
-    const toggleDeck = useCallback((title) => {
-        setSelectedDeck(title);
+    const toggleDeck = useCallback((name) => {
+        let temporaryCollection = [...collection];
+        temporaryCollection = temporaryCollection.filter(card => card.deck === name);
+        setSelectedCollection(temporaryCollection);
+        setSelectedDeck(name);
         setEdit(false);
-
-        //TODO: get all flashcards for deck backend
-    }, [])
+    }, [collection])
 
     const addDeck = useCallback(() => {
         setCollection([{question: '', answer: ''}]);
@@ -70,32 +70,44 @@ function FlashcardView(props){
     }, [])
 
     const deleteDeck = useCallback(() => {
+        const deletedDeck = selectedDeck;
+        let newDeck = deckList.filter(deck => deck.name !== deletedDeck);
+        setDeckList(newDeck);
         setSelectedDeck();
-        //TODO: filter collection and delete backend
-        // delete collection and remove from deck titles
-    }, [])
+        setSelectedCollection();
+
+        const deleteUrl = `https://401-todo-api.azurewebsites.net/api/deck
+        /${deletedDeck}/?format=api`;
+        fetch(deleteUrl, {method: 'DELETE'});
+    }, [selectedDeck, deckList])
 
     const toggleEdit = useCallback(() => {
         setEdit(!edit);
     }, [edit])
 
+    const getDeckList = useCallback(() => {
+        return (
+            deckList?.map((deck, i) => (
+                <DeckToggle
+                key={i}
+                active={selectedDeck === deck.name}
+                onClick={() => toggleDeck(deck.name)}
+                >
+                {deck.name}
+                </DeckToggle>
+            ))
+        )
+    }, [deckList, selectedDeck, toggleDeck])
+
     return (     
         <FlashcardContent>
             <Sidebar>
-            {deckList?.map(title => (
-                <DeckToggle
-                key={title}
-                active={selectedDeck === title}
-                onClick={() => toggleDeck(title)}
-                >
-                {title}
-                </DeckToggle>
-            ))}
+            {getDeckList()}
             <PlusButton bottom={50} left={100} iconName='plus' onClickButton={addDeck}></PlusButton>
             </Sidebar>
             <MainView>
-                {!edit && selectedDeck && <FlashcardCollection editDeck={toggleEdit} deleteDeck={deleteDeck} selectedDeck={selectedDeck} flashcardCollection={collection}/>}
-                {edit && <EditFlashCardCollection editDeck={toggleEdit} selectedDeck={selectedDeck} flashcardCollection={collection}/>}
+                {selectedDeck && !edit && <FlashcardCollection editDeck={toggleEdit} deleteDeck={deleteDeck} selectedDeck={selectedDeck} flashcardCollection={selectedCollection}/>}
+                {edit && <EditFlashCardCollection editDeck={toggleEdit} selectedDeck={selectedDeck} flashcardCollection={selectedCollection}/>}
             </MainView>
         </FlashcardContent>
     );
