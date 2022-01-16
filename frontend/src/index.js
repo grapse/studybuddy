@@ -10,7 +10,7 @@ import Timer from './components/timer'
 
 ReactDOM.render(
   <Router>
-    <Navigation/>
+    <Navigation path={window.location.pathname}/>
     <Routes>
       <Route path="/" element={<Dashboard />} />
       <Route path="/about" element={<Test />} />

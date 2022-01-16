@@ -7,13 +7,13 @@ import RegularTimer from "./regularTimer";
 const defaultColor = "#db504a";
 
 const timerIcons = [
-    {icon:'alarm-fill',name:"Regular",description:"Pick a duration to study",
+    {icon:'alarm-fill',name:"Regular",description:"Pick a set duration to study.",
     timer:<><RegularTimer></RegularTimer></>},
 
     {icon:'clock-history',name:'Pomodoro',description:"Pace yourself for breaks!",
     timer:<><PomodoroTimer></PomodoroTimer></>},
 
-    {icon:'stopwatch',name:"Stopwatch",description:"Click before and after studying, and see how long you studied!",
+    {icon:'stopwatch',name:"Stopwatch",description:"See how long you can study!",
     timer:<><CounterTimer></CounterTimer></>}
 
 ]
@@ -36,10 +36,25 @@ const Icons = styled.div`
 `
 const Icon = styled.div`
     margin-top:50px;
+    font-size:50px;
     color:#db504a;
-    transition: .3s ease-in-out;
+    transition: .2s ease-in-out;
     &:hover{
         cursor:pointer;
+        color:#ff6f59;
+        transform:scale(1.5);
+        transition: .2s ease-in-out;
+    }
+`
+const IconSelected = styled.div`
+    margin-top:50px;
+    font-size:75px;
+    color:#ff6f59;
+    transition: .2s ease-in-out;
+    &:hover{
+        cursor:pointer;
+        color:#ff6f59;
+        transition: .2s ease-in-out;
     }
 `
 const IconText = styled.div`
@@ -61,9 +76,14 @@ function Timer(){
                 {timerIcons.map((v,i) => {
                     return(
                         <>
+                            {timer === i ? <IconSelected>
+                                <i onClick={() => {}} class={`bi bi-${v.icon}`}></i>
+                            </IconSelected> :
                             <Icon>
-                                <i onClick={() => setTimer(i)} class={`bi bi-${v.icon}`} style={{transition: ".3s ease-in-out",fontSize: timer === i ? "75px" : "50px"}}></i>
+                                <i onClick={() => setTimer(i)} class={`bi bi-${v.icon}`}></i>
                             </Icon>
+                            }
+                            
                             <IconText>
                                 {v.name}
                             </IconText>
