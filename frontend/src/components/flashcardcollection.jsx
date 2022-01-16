@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import styled from 'styled-components';
 import { StyledButton } from "../styles/styles";
+import { Icon } from '@iconify/react';
 
 const Footer = styled.div`
     display: flex;
@@ -30,7 +31,7 @@ const Collection = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 30px; 
+    padding: 10px; 
     overflow-y: auto;
 `;
 
@@ -47,15 +48,21 @@ const Answer = styled.div`
     width: 50%;
     padding: 5px;
     margin: 0px;
+`;
 
+const Title = styled.div`
+    color: #DB504A;
+    font-weight: 500;
+    font-size: 30px;
+    align-self: center;
 `;
 
 const flashcards = [{question: 'test1', answer: 'test'},
                     {question: 'test2', answer: 'test'},
                     {question: 'test3', answer: 'test'}];
 function FlashcardCollection(props){
-    //const { flashcards, newDeck, onDeleteDeck, deckName } = props;
-    const { newDeck, deleteDeck } = props;
+    //const { flashcards, newDeck } = props;
+    const { newDeck, deleteDeck, selectedDeck } = props;
 
     const [collection, setCollection] = useState(flashcards);
     const [edit, setEdit] = useState(newDeck);
@@ -71,41 +78,68 @@ function FlashcardCollection(props){
         setCollection(temporaryCollection);
     }
 
-    const updateQuestion = (newQuestion, i) => {
+    const updateQuestion = useCallback((newQuestion, i) => {
         const temporaryCollection = [...collection];
         temporaryCollection[i].question = newQuestion;
         setCollection(temporaryCollection);
-    }
+    }, [collection])
 
-    const updateAnswer = (newAnswer, i) => {
+    const updateAnswer = useCallback((newAnswer, i) => {
         const temporaryCollection = [...collection];
         temporaryCollection[i].answer = newAnswer;
         setCollection(temporaryCollection);
-    }
+    }, [collection])
 
-    const deleteCard = () => {
-        // TODO: delete to collection here
-    }
+    const deleteCard = useCallback((removeCard) => {
+        let temporaryCollection = [...collection];
+        temporaryCollection = temporaryCollection.filter(card => card !== removeCard);
+        setCollection(temporaryCollection);
+    }, [collection])
 
     const saveDeck = () => {
-        const temporaryCollection = [...collection];
-        Object.keys(temporaryCollection).forEach(k => (temporaryCollection[k].question === '' && temporaryCollection[k].answer === '') && delete temporaryCollection[k]);
+        let temporaryCollection = [...collection];
+        temporaryCollection = temporaryCollection.filter(card => card?.question !== '' && card?.answer !== '');
         setCollection(temporaryCollection);
         setEdit(false);
 
         // TODO: save backend
     }
 
+    const getFlashcards = useCallback(() => {
+        return (
+            collection.map((card, i) => (
+                <Flashcard>
+                    <Question>{card?.question}</Question>
+                    <Answer>{card?.answer}</Answer>
+                </Flashcard>
+            ))
+        )
+    }, [collection])
+
+    const getEditFlashcards = useCallback(() => {
+        return (
+            collection.map((card, i) => (
+                <Flashcard>
+                    <input 
+                        type="text" 
+                        key={i} 
+                        value={card?.question} 
+                        onChange={(e) => updateQuestion(e.target.value, i)} />
+                    <input 
+                        type="text" 
+                        key={i} 
+                        value={card?.answer} 
+                        onChange={(e) => updateAnswer(e.target.value, i)} />
+                    <Icon icon="mdi:trash-can-outline" color="#db504a" onClick={() => deleteCard(card)} />
+                </Flashcard>
+            ))
+        )
+    }, [collection, deleteCard, updateAnswer, updateQuestion])
+
     return edit ? (     
         <div>
             <Collection>
-            {collection && 
-                collection.map((card, i) => (
-                    <Flashcard>
-                        <input type="text" key={i} value={card.question} onChange={(e) => updateQuestion(e.target.value, i)} />
-                        <input type="text" key={i} value={card.answer} onChange={(e) => updateAnswer(e.target.value, i)} />
-                    </Flashcard>
-                ))}
+            {edit && collection && getEditFlashcards()}
             </Collection>
             <Footer>
                 <StyledButton onClick={() => addCard()}>Add Card</StyledButton>
@@ -115,13 +149,8 @@ function FlashcardCollection(props){
     ) : (     
         <div>
             <Collection>
-            {collection && 
-                collection.map((card, i) => (
-                    <Flashcard>
-                        <Question>{card.question}</Question>
-                        <Answer>{card.answer}</Answer>
-                    </Flashcard>
-                ))}
+            <Title>{selectedDeck}</Title>
+            {collection && getFlashcards()}
             </Collection>
             <Footer>
                 <StyledButton onClick={() => setEdit(true)}>Edit</StyledButton>

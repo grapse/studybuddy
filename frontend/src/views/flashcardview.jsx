@@ -77,7 +77,7 @@ function FlashcardView(props){
             <AddButton onClick={() => addDeck()}>+</AddButton>
             </Sidebar>
             <MainView>
-                <FlashcardCollection newDeck={newDeck} deleteDeck={deleteDeck}/>
+                <FlashcardCollection newDeck={newDeck} deleteDeck={deleteDeck} selectedDeck={selectedDeck}/>
             </MainView>
         </FlashcardContent>
     );
