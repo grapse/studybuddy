@@ -10,7 +10,9 @@ const Holder = styled.div`
     justify-content: center;
     align-items:center;
     transition: .3s ease-in-out;
+  
     `
+
 const Icon = styled.div`
     color:#db504a;
     font-size:2rem;
