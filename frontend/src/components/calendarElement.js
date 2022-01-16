@@ -49,7 +49,7 @@ class DndCalendar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      events: events,
+      events: [],
       displayDragItemInCell: true,
     }
 
@@ -73,6 +73,7 @@ class DndCalendar extends React.Component {
       title: draggedEvent.title,
       start,
       end,
+      
       allDay: allDay,
     }
 
@@ -80,6 +81,21 @@ class DndCalendar extends React.Component {
     this.moveEvent({ event, start, end })
   }
 
+  async componentDidMount() {
+    try {
+      const res = await fetch('http://localhost:8000/api/date/?format=json');
+      const getEvents = await res.json();
+      const newEvents = getEvents.map((v,i) => {
+          return({id:i,title:v.Task,start:new Date(v.year,v.month-1,v.date,19,30,0),end:new Date(v.year,v.month-1,v.date,19,30,0)})
+      })
+      console.log(events);
+      this.setState({
+        events: newEvents
+      });
+    } catch (e) {
+      console.log(e);
+  }
+  }
   moveEvent = ({ event, start, end, isAllDay: droppedOnAllDaySlot }) => {
     const { events } = this.state
 
@@ -179,7 +195,7 @@ class DndCalendar extends React.Component {
         defaultDate={new Date()}
         popup={true}
         onDoubleClickEvent = {event => this.onSelectEvent(event)}
-        views={['month', 'day', 'week']}
+        views={['month']}
         eventPropGetter={(this.eventStyleGetter)}
         dragFromOutsideItem={
           this.state.displayDragItemInCell ? this.dragFromOutsideItem : null
