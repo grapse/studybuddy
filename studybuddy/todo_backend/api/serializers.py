@@ -1,10 +1,5 @@
 from rest_framework import serializers
-from .models import Todo, Deck, Flashcards, date
-
-class TodoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Todo
-        fields = ['id', 'title', 'description', 'completed']
+from .models import Deck, Flashcards, date
 
 class DeckSerializer(serializers.ModelSerializer):
     class Meta:
